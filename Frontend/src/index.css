@@ -1,0 +1,64 @@
+@import "tailwindcss";
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #000 inset !important;
+    -webkit-text-fill-color: #fff !important;
+    border: 3px solid #22c55e !important; /* Tailwind green-500 */
+    transition: background-color 5000s ease-in-out 0s !important;
+  }
+  
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #000 inset !important;
+    -webkit-text-fill-color: #fff !important;
+    border: 3px solid #22c55e !important; /* Keep border green on focus */
+  }
+
+.player-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.player-container audio {
+  width: 80%;
+  max-width: 500px;
+}
+.bar {
+  height: 4px;                /* thinner line */
+  appearance: none;           /* remove default browser style */
+  background: #3f3f46;        /* neutral background */
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Progress (filled part) */
+.bar::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #3f3f46;
+  border-radius: 10px;
+}
+
+/* thumb (circle knob) */
+.bar::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #22c55e;        /* Spotify green */
+  border-radius: 50%;
+  margin-top: -4px;           /* centers thumb on line */
+}
+
+/* Firefox */
+.bar::-moz-range-track {
+  height: 4px;
+  background: #3f3f46;
+  border-radius: 10px;
+}
+
+.bar::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: #22c55e;
+  border-radius: 50%;
+}
+
+  
+  
