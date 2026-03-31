@@ -7,4 +7,5 @@ router.post('/addsong',upload.fields([{ name: "image", maxCount: 1 },{ name: "au
 router.get('/allsongs',music.allsongs);
 router.post('/delete_song',music.delete_song);
 router.get('/songs',music.songs);
+router.post('/Searchdata',music.SearchData)
 module.exports = router;

@@ -9,6 +9,7 @@ import Songs from './Songs';
 import { FaSearch } from 'react-icons/fa';
 import {addplayliststutas} from './Playcontext'
 import Addplaylist from './Addplaylist';
+import PlayListShow from './PlayListShow';
 const defaultImg = "https://www.vhv.rs/dpng/d/256-2569650_men-profile-icon-png-image-free-download-searchpng.png"
 const Header = () => {
     const {showCreatePlaylist, setshowCreatePlaylist} = useContext(addplayliststutas)
@@ -16,6 +17,7 @@ const Header = () => {
     const [formData, setformData] = useState("")
     const [user, setuser] = useState()
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    const [selectedPlaylist, setSelectedPlaylist] = useState(null)
     const hamburgerRef = useRef(null)
     const spotifyLogoRef = useRef(null)
     const searchInputWrapperRef = useRef(null)
@@ -28,7 +30,6 @@ const Header = () => {
     },[])
  
     useEffect(() => {
-        // Initial animations
         gsap.fromTo(hamburgerRef.current, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5 });
         gsap.fromTo(spotifyLogoRef.current, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5, delay: 0.2 });
         gsap.fromTo(searchInputWrapperRef.current, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.4 });
@@ -40,7 +41,6 @@ const Header = () => {
             gsap.fromTo(signUpButtonRef.current, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.5, delay: 0.8 });
         }
        
-       // Hover animations for buttons and links
        const addHoverAnimation = (elementRef, scale = 1.1) => {
            if (elementRef.current) {
                elementRef.current.addEventListener('mouseenter', () => {
@@ -80,11 +80,11 @@ const Header = () => {
                     <button 
                         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                         ref={hamburgerRef}
-                        className='lg:hidden border-2 border-zinc-500 p-2 rounded-lg hover:scale-105 cursor-pointer hover:shadow-lg transition-all duration-300'
+                        className='lg:hidden border-2 border-zinc-500 p-2 rounded-lg hover:scale-105 cursor-pointer hover:shadow-lg transition-all duration-300 z-50'
                     >
                         <FaBars className='text-white' />
                     </button>
-                    <img src="/spotify.png" alt="Spotify Logo" 
+                    <img src="/VibeTune.png" alt="Spotify Logo" 
                         ref={spotifyLogoRef}
                         className='h-12 w-12' 
                     />
@@ -93,8 +93,8 @@ const Header = () => {
                     ref={searchInputWrapperRef}
                     className='flex border-2 border-zinc-400 rounded-lg'
                 >
-                    <div className='py-1 px-2'><GoHomeFill className='text-zinc-300 ' size={35} /></div>
-                    <div className='border-l-2 border-l-zinc-500 py-1 px-2'><FaSearch className='text-zinc-300' size={30} /></div>
+                    <Link to={'/'} className='py-1 px-2'><GoHomeFill className='text-zinc-300 ' size={35} /></Link>
+                    <Link to={'/scaech'} className='border-l-2 border-l-zinc-500 py-1 px-2'><FaSearch className='text-zinc-300' size={30} /></Link>
                     
                 </div>
                 <div>
@@ -125,14 +125,19 @@ const Header = () => {
                 </div>
             </div>
             <div className=' flex'>
-                <Playlist  isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+                <Playlist
+                    isOpen={isSidebarOpen}
+                    onClose={() => setIsSidebarOpen(false)}
+                    onSelectPlaylist={setSelectedPlaylist}
+                />
                     <div className=' w-full p-1 sm:p-3'>
                         {
-                            showCreatePlaylist?
-                            <Addplaylist/>:
-                            <Songs />
+                            showCreatePlaylist
+                                ? <Addplaylist data={{ showCreatePlaylist, setshowCreatePlaylist }} />
+                                : selectedPlaylist
+                                    ? <PlayListShow playlist={selectedPlaylist} onBack={() => setSelectedPlaylist(null)} />
+                                    : <Songs />
                         }
-                    
                     </div>
             </div>
         </>

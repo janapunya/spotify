@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState, Activity } from 'react'
 import { gsap } from 'gsap'
 import axios from '../routs/Axios'
-import { Link, useSearchParams } from 'react-router-dom'
+import { LuLogOut } from "react-icons/lu";
 import { FaEnvelope, FaUser, FaMusic, FaChevronDown, FaCog } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 import Setting from './Setting'
 const defaultImg = "https://www.vhv.rs/dpng/d/256-2569650_men-profile-icon-png-image-free-download-searchpng.png"
 import Add_songs from './Song_list'
 const Useraccount = () => {
+  const navigate = useNavigate()
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isUpdatingRole, setIsUpdatingRole] = useState(false)
@@ -77,6 +79,19 @@ const Useraccount = () => {
       console.log('Error fetching user data:', err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const Logout = async ()=>{
+    try{
+      const res = await axios.post('/users/log_out')
+      if(res.data.stutas){
+        setUser(null)
+        navigate('/')
+      }
+    }catch{
+      // If logout fails for any reason, still route back to home.
+      navigate('/')
     }
   }
 
@@ -269,12 +284,12 @@ const Useraccount = () => {
           <Setting user={user} onClose={handleCloseSetting} UpdateRole={UpdateRole} setUpdateRole={setUpdateRole} />
         </Activity>
       </div>
-      <div className='min-h-screen bg-linear-to-br from-[#121212] via-[#1a1a1a] to-[#121212] py-8 px-4 sm:px-8'>
+      <div className='min-h-screen  overflow-x-hidden bg-linear-to-br from-[#121212] via-[#1a1a1a] to-[#121212] py-8 px-4 sm:px-8 '>
         <div className='max-w-4xl mx-auto space-y-6'>
           {/* First Div - Profile Section */}
           <div
             ref={firstDivRef}
-            className='bg-linear-to-r from-[#1a1a1a] to-[#2a2a2a] rounded-2xl p-6 sm:p-8 shadow-2xl border border-gray-800 hover:border-gray-700 transition-all duration-300'
+            className='bg-linear-to-r  from-[#1a1a1a] to-[#2a2a2a] rounded-2xl p-6 sm:p-8 shadow-2xl border border-gray-800 hover:border-gray-700 transition-all duration-300'
           >
             <div className='flex flex-col sm:flex-row items-center gap-6'>
               <div className='relative'>
@@ -312,9 +327,18 @@ const Useraccount = () => {
             ref={secondDivRef}
             className='bg-linear-to-r from-[#1a1a1a] to-[#2a2a2a] rounded-2xl p-6 sm:p-8 shadow-2xl border border-gray-800 hover:border-gray-700 transition-all duration-300'
           >
-            <h2 className='text-2xl font-bold text-white mb-6 pb-4 border-b border-gray-700'>
+            <div className='border-b border-gray-700 flex justify-between items-center pr-2 mb-6 pb-4'>
+
+            <h2 className='text-2xl font-bold text-white '>
               Account Information
             </h2>
+            <button
+              onClick={Logout}
+              className=' hover:bg-stone-700 border-2 hover:border-stone-400 flex px-2 py-1 items-center text-red-500 rounded-md'
+            >
+              <LuLogOut /> Log Out
+            </button>
+            </div>
             <div className='space-y-4'>
               {/* Email */}
               <div

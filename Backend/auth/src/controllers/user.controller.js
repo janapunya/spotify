@@ -198,11 +198,30 @@ async function create_artist(req, res) {
         })
     }
 }
+async function Logout(req,res) {
+    try {
+        res.clearCookie("auth_token", {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+        });
+
+        return res.json({
+            stutas: true
+        });
+    } catch (err) {
+        console.log(err);
+        return res.json({
+            stutas: false,
+        });
+    }
+}
 
 module.exports = {
     checkuser,
     create_user,
     login_user,
     update_user,
-    create_artist
+    create_artist,
+    Logout
 }

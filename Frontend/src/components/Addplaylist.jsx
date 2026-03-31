@@ -1,11 +1,14 @@
 import React,{useState, useRef} from 'react'
-
-const Addplaylist = () => {
+import { musicAPI } from '../routs/Axios'
+const Addplaylist = React.memo( ({ data }) => {
     const [imgfile, setimgfile] = useState(null)
     const [playlistName, setPlaylistName] = useState('')
     const [imagePreview, setImagePreview] = useState(null)
+    const [uploding, setUploding] = useState(null)
+    const [checkStatus, setCheckStatus] = useState(false)
+    const [upplodingStutas, setUpplodingStutas] = useState(true)
     const fileInputRef = useRef(null)
-
+    console.log(data)
     const handleImageChange = (e) => {
         const file = e.target.files[0]
         if (file) {
@@ -19,16 +22,46 @@ const Addplaylist = () => {
         fileInputRef.current?.click()
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        try{
+        setUploding(true)
+        setUpplodingStutas(false)
         e.preventDefault()
-        // Handle form submission here
-        console.log('Playlist Name:', playlistName)
-        console.log('Image File:', imgfile)
+        const formData = new FormData()
+        formData.append('name', playlistName)
+        formData.append('image', imgfile)
+        const res = await musicAPI.post('/playlist/add_playlist', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        setCheckStatus(res.data.stutas)
+        }
+        catch(err){
+            setUploding(false)
+            setCheckStatus(false)
+        }
+        finally{
+            setUploding(false)
+            setImagePreview(null)
+            setPlaylistName("")
+            setTimeout(() => {
+                data.setshowCreatePlaylist(!data.showCreatePlaylist)
+            },3000);
+        }
     }
 
   return (
     <div className=" p-8 flex items-center justify-center">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md relative">
+                <button
+                    type="button"
+                    onClick={() => data.setshowCreatePlaylist(!data.showCreatePlaylist)}
+                    className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-zinc-900 border border-zinc-700 text-zinc-300 flex items-center justify-center hover:bg-zinc-800 hover:text-white hover:border-zinc-500 transition-colors duration-200"
+                    aria-label="Close"
+                >
+                    ✕
+                </button>
             {/* Title with fade-in animation */}
             <h1 className='font-bold text-3xl mb-8 text-white animate-fade-in'>
                 Create New Playlist
@@ -78,6 +111,7 @@ const Addplaylist = () => {
                             accept="image/*" 
                             onChange={handleImageChange}
                             className="hidden"
+                            name='image'
                         />
                     </div>
                 </div>
@@ -102,16 +136,21 @@ const Addplaylist = () => {
                 {/* Submit Button with animation */}
                 <div className="animate-slide-up pt-4" style={{ animationDelay: '0.2s' }}>
                     <button
-                        type="submit"
-                        className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-green-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={handleSubmit}
+                        className={`w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-green-500/50 disabled:opacity-50 disabled:cursor-not-allowed ${upplodingStutas ? 'bg-green-500' : uploding ? 'bg-green-500' : checkStatus ? 'bg-green-500' : 'bg-red-600 hover:bg-red-700 shadow-lg hover:shadow-red-500/50'}`}
                     >
-                        Create Playlist
+                        {
+                        upplodingStutas ? <span>Playlist created successfully</span> :
+                        uploding ? <span className='inline-block h-4 w-4 border-3 border-green-100 border-t-transparent rounded-full animate-spin'></span> :
+                        
+                        checkStatus ? <span>Playlist created successfully</span> : <span>Something went wrong</span>
+                        }
                     </button>
                 </div>
             </form>
         </div>
     </div>
   )
-}
+})
 
 export default Addplaylist

@@ -200,7 +200,7 @@ const Login = () => {
         {/* Logo */}
         <div ref={logoRef} className="flex justify-center mb-8">
           <img
-            src="/spotify.png"
+            src="/VibeTune.png"
             alt="Spotify Logo"
             className="h-16 w-16 md:h-20 md:w-20"
           />
@@ -211,7 +211,7 @@ const Login = () => {
           ref={titleRef}
           className="text-4xl md:text-5xl font-bold text-center mb-8 text-white"
         >
-          Log in to Spotify
+          Log in to VibeTune
         </h1>
 
         {/* Google Login Button */}

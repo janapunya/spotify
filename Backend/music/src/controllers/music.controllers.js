@@ -66,7 +66,6 @@ async function allsongs(req,res) {
 }
 
 async function delete_song(req,res) {
-    console.log("check")
     try{
         let cookie = req.cookies.auth_token;
         const {id} = req.body
@@ -104,7 +103,6 @@ async function delete_song(req,res) {
 
 async function songs(req,res) {
     try{
-        console.log("check");
         const responceData = await musicSchema.find().sort({createdAt:-1}).limit(20);
         if(responceData){
             return res.json({
@@ -126,9 +124,39 @@ async function songs(req,res) {
     }
 }
 
+async function SearchData(req,res) {
+    const { query = "" } = req.body;
+    try{
+        const trimmedQuery = query.trim();
+
+        if(trimmedQuery === ""){
+            return res.json({
+                songs:[]
+            });
+        }
+
+        const escapedQuery = trimmedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const songData = await musicSchema
+            .find({ name: { $regex: escapedQuery, $options: 'i' } })
+            .sort({ createdAt: -1 })
+            .limit(20);
+
+        return res.json({
+            songs: songData
+        });
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({
+            songs: []
+        });
+    }
+}
+
 module.exports ={
     Add_music,
     allsongs,
     delete_song,
-    songs
+    songs,
+    SearchData
 }

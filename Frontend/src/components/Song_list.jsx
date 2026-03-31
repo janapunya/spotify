@@ -83,7 +83,7 @@ const Song_list = () => {
 
             const res = await musicAPI.post('/music/delete_song', {
                 id
-            })     
+            })
             setdeletestutas((prev) => ({
                 ...prev,
                 [id]: { loading: false, success: res.data.stutas },
@@ -115,7 +115,7 @@ const Song_list = () => {
                     <Add_song Closeform={Closeform} />
                 </div>
             }
-            <div className='bg-linear-to-r to-[#1a1a1a] from-10% from-[#2a2a2a] to-90% rounded-2xl p-6 sm:p-8 shadow-2xl border border-gray-800 hover:border-gray-700 transition-all duration-300'>
+            <div className='bg-linear-to-r to-[#1a1a1a] overflow-x-hidden from-10% from-[#2a2a2a] to-90% rounded-2xl p-6 sm:p-8 shadow-2xl border- border-gray-800 hover:border-gray-700 transition-all duration-300'>
                 <div className='flex justify-between'>
 
                     <h2 className='text-2xl font-bold text-white mb-6 pb-4'>All Songs</h2>
@@ -124,41 +124,67 @@ const Song_list = () => {
                 <div className='space-y-4'>
                     {
                         All_songs.map((song) => (
-                            
+
                             <div
                                 key={song._id}
-                                className='flex items-center justify-between bg-[#0f0f0f] rounded-xl border border-gray-800 hover:border-green-500/50 transition-all duration-300 group'>
-                                <div className='flex ml-2'>
-                                    <img src={song.imgUrl} alt="" className='h-12 w-12 rounded-lg mr-3' />
+                                className="flex items-center justify-between gap-3 px-3 py-2 bg-[#0f0f0f] rounded-xl border border-gray-800 hover:border-green-500/50 transition-all duration-300 group overflow-hidden"
+                            >
+                                {/* LEFT */}
+                                <div className="flex items-center gap-3 flex-1 min-w-0">
+                                    <img
+                                        src={song.imgUrl}
+                                        alt=""
+                                        className="h-12 w-12 rounded-lg object-cover flex-shrink-0"
+                                    />
 
-                                    <div>
-                                        <h1>{song?.name}</h1>
-                                        <p>artist name</p>
+                                    <div className="min-w-0">
+                                        <h1 className="text-white text-sm font-semibold truncate">
+                                            {song?.name}
+                                        </h1>
+                                        <p className="text-xs text-gray-400 truncate">
+                                            artist name
+                                        </p>
                                     </div>
                                 </div>
-                                <div>
-                                    <div>
 
-                                        <audio key={song._id} ref={(e) => (audioRef.current[song._id]) = e} src={song?.audioUrl} />
-                                        <button onClick={() => backward(song._id)} className="hover:scale-110 hover:shadow-lg transition-all duration-300 sm:mr-10"><IoPlayBack className='text-zinc-500' size={30} /></button>
-                                        <button onClick={() => togglePlay(song._id)} className="hover:scale-110 hover:shadow-lg transition-all duration-300 sm:mr-10">
-                                            {isPlaying[song._id] ? <TbPlayerPauseFilled className='text-zinc-500' size={30} /> : <IoPlay className='text-zinc-500' size={30} />}
-                                        </button>
-                                        <button onClick={() => forward(song._id)} className="hover:scale-110 hover:shadow-lg transition-all duration-300"><IoPlayForward className='text-zinc-500' size={30} /></button>
-                                    </div>
+                                {/* CENTER CONTROLS */}
+                                <div className="flex items-center gap-3 flex-shrink-0">
+                                    <audio
+                                        ref={(e) => (audioRef.current[song._id] = e)}
+                                        src={song?.audioUrl}
+                                    />
 
+                                    <button onClick={() => backward(song._id)} className="hover:scale-110 transition">
+                                        <IoPlayBack className="text-zinc-400" size={22} />
+                                    </button>
 
-                                </div>
-                                <div className='mr-2'>
-                                    <button onClick={() => delete_song(song._id)} className="hover:scale-110 hover:shadow-lg transition-all duration-300">
-                                        {deletestutas[song._id]?.loading ? (
-                                            <span className='inline-block h-4 w-4 border-2 border-green-400 border-t-transparent rounded-full animate-spin'></span>
-                                        ) : deletestutas[song._id]?.success === true ? (
-                                            <GiCheckMark color='green' size={25} />
-                                        ) : deletestutas[song._id]?.success === false ? (
-                                            <GiCrossMark color='red' size={25} />
+                                    <button onClick={() => togglePlay(song._id)} className="hover:scale-110 transition">
+                                        {isPlaying[song._id] ? (
+                                            <TbPlayerPauseFilled className="text-white" size={24} />
                                         ) : (
-                                            <MdDeleteForever className='text-zinc-500' size={30} />
+                                            <IoPlay className="text-white" size={24} />
+                                        )}
+                                    </button>
+
+                                    <button onClick={() => forward(song._id)} className="hover:scale-110 transition">
+                                        <IoPlayForward className="text-zinc-400" size={22} />
+                                    </button>
+                                </div>
+
+                                {/* RIGHT DELETE */}
+                                <div className="flex-shrink-0">
+                                    <button
+                                        onClick={() => delete_song(song._id)}
+                                        className="hover:scale-110 transition"
+                                    >
+                                        {deletestutas[song._id]?.loading ? (
+                                            <span className="inline-block h-4 w-4 border-2 border-green-400 border-t-transparent rounded-full animate-spin"></span>
+                                        ) : deletestutas[song._id]?.success === true ? (
+                                            <GiCheckMark color="green" size={22} />
+                                        ) : deletestutas[song._id]?.success === false ? (
+                                            <GiCrossMark color="red" size={22} />
+                                        ) : (
+                                            <MdDeleteForever className="text-zinc-500" size={24} />
                                         )}
                                     </button>
                                 </div>

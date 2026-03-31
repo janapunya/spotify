@@ -11,7 +11,14 @@ input:-webkit-autofill {
     -webkit-text-fill-color: #fff !important;
     border: 3px solid #22c55e !important; /* Keep border green on focus */
   }
-
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE & Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
 .player-container {
   margin-top: 20px;
   text-align: center;

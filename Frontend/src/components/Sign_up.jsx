@@ -316,8 +316,8 @@ const Sign_up = () => {
           {/* Logo */}
           <div ref={logoRef} className="flex justify-center mb-8">
             <img
-              src="/spotify.png"
-              alt="Spotify Logo"
+              src="/VibeTune.png"
+              alt=" VibeTune Logo"
               className="h-16 w-16 md:h-20 md:w-20"
             />
           </div>
@@ -325,9 +325,9 @@ const Sign_up = () => {
           {/* Title */}
           <h1
             ref={titleRef}
-            className="text-4xl md:text-5xl font-bold text-center mb-8 text-white"
+            className="text-3xl md:text-4xl font-bold text-center mb-8 text-white"
           >
-            Sign up for Spotify
+            Sign up for VibeTune
           </h1>
 
           {/* Google Signup Button */}

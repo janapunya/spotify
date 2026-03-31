@@ -48,37 +48,87 @@ const onClick = ()=>{
   return (
     <>
     
-    {PlayingData && 
-    
-      <motion.div
-      drag
-      initial={{
-        x: window.innerWidth - 300,
-        y: window.innerHeight - 120
-      }}
-      dragConstraints={{top:0,left:0,right: window.innerWidth,bottom: window.innerHeight}}
-      dragElastic={0.8}
-      className=' border-2 border-zinc-500 text-amber-50 h-25 w-72 p-2 rounded-xl flex bg-zinc-800 '>
-        <img src={PlayingData.imgUrl} alt="" className='h-20 w-20 rounded-md mr-3' />
-        <div >
-          <div className='flex justify-between pr-2 mb-4'>
-          <h1>{PlayingData.name}</h1>
-          <GiCancel onClick={onClick} className=' text-zinc-500 cursor-pointer' size={22}/>
-          </div>
-          <div>
-            <audio ref={playingRef} src={PlayingData.audioUrl}></audio>
-            <button onClick={backward} className="hover:scale-110 hover:shadow-lg transition-all duration-300 mr-10"><IoPlayBack className='text-zinc-500' size={30} /></button>
-            <button onClick={togglePlay} className="hover:scale-110 hover:shadow-lg transition-all duration-300 mr-10">
-              {isPlaying ? <TbPlayerPauseFilled className='text-zinc-500' size={30} /> : <IoPlay className='text-zinc-500' size={30} />}
-            </button>
-            <button onClick={forward} className="hover:scale-110 hover:shadow-lg transition-all duration-300"><IoPlayForward className='text-zinc-500' size={30} /></button>
+    {PlayingData && (
+  <motion.div
+    drag
+    initial={{
+      x: window.innerWidth - 320,
+      y: window.innerHeight - 120
+    }}
+    dragConstraints={{
+      top: 0,
+      left: 0,
+      right: window.innerWidth,
+      bottom: window.innerHeight
+    }}
+    dragElastic={0.2}
+    className="fixed z-50 w-80 p-3 rounded-2xl 
+    bg-white/5 backdrop-blur-xl 
+    border border-white/10 shadow-2xl 
+    flex gap-3 items-center"
+  >
+    {/* IMAGE */}
+    <div className="relative">
+      <img
+        src={PlayingData.imgUrl}
+        alt=""
+        className="h-14 w-14 rounded-lg object-cover"
+      />
 
-          </div>
-        </div>
+      {/* PLAY OVERLAY */}
+      <button
+        onClick={togglePlay}
+        className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 rounded-lg transition"
+      >
+        {isPlaying ? (
+          <TbPlayerPauseFilled className="text-white" size={18} />
+        ) : (
+          <IoPlay className="text-white ml-1" size={18} />
+        )}
+      </button>
+    </div>
 
+    {/* INFO + CONTROLS */}
+    <div className="flex-1 min-w-0">
+      {/* TOP */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-sm font-semibold text-white truncate">
+          {PlayingData.name}
+        </h1>
 
-      </motion.div>
-    }
+        <GiCancel
+          onClick={onClick}
+          className="text-zinc-400 hover:text-red-500 cursor-pointer transition"
+          size={18}
+        />
+      </div>
+
+      {/* CONTROLS */}
+      <div className="flex items-center gap-3 mt-2">
+        <audio ref={playingRef} src={PlayingData.audioUrl} />
+
+        <button onClick={backward} className="hover:scale-110 transition">
+          <IoPlayBack className="text-zinc-400 hover:text-white" size={18} />
+        </button>
+
+        <button
+          onClick={togglePlay}
+          className="bg-green-500 p-2 rounded-full hover:scale-110 transition shadow-md"
+        >
+          {isPlaying ? (
+            <TbPlayerPauseFilled className="text-black" size={16} />
+          ) : (
+            <IoPlay className="text-black ml-0.5" size={16} />
+          )}
+        </button>
+
+        <button onClick={forward} className="hover:scale-110 transition">
+          <IoPlayForward className="text-zinc-400 hover:text-white" size={18} />
+        </button>
+      </div>
+    </div>
+  </motion.div>
+)}
     </>
   )
 })
