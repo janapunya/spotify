@@ -5,7 +5,7 @@ const authcontroller = require('../controllers/auth.controller');
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/callback"
+    callbackURL: "https://vibetube-backend-auth.onrender.com/auth/callback"
   },
   async function(accessToken, refreshToken, profile, done) {
     try {

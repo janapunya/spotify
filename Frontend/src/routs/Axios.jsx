@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseURL ='http://localhost:3000'
+const baseURL ='https://vibetube-backend-auth.onrender.com'
 const instance =axios.create({
     baseURL,
     withCredentials:true    
@@ -7,6 +7,6 @@ const instance =axios.create({
 export default instance;
 export const URL=baseURL;
 export const musicAPI = axios.create({
-    baseURL: 'http://localhost:3001',
+    baseURL: 'https://vibetube-backend-music.onrender.com',
     withCredentials: true,
   });
