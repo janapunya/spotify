@@ -44,12 +44,14 @@ async function allsongs(req,res) {
     try{
        
         let cookie = req.cookies.auth_token;
+        console.log(cookie)
             if (!cookie) {
                 return res.json(
                     { stutas: false }
                 )
             }
             const check = jwt.verify(cookie, process.env.JWT_COOKIE_SECRET);
+            console.log(check)
             if (!check) {
                 return res.json({
                     stutas: false
