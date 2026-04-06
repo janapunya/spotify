@@ -10,7 +10,7 @@ router.get("/google",
   
   // Step 2: Google redirects here
   router.get("/callback",
-    passport.authenticate("google", { failureRedirect: "http://localhost:5173",session:false }),
+    passport.authenticate("google", { failureRedirect: "https://vibetune-ten.vercel.app/",session:false }),
     (req, res) => {
       const user = req.user;
       const token = jwt.sign({email:user.email,id:user._id},process.env.JWT_COOKIE_SECRET,{expiresIn: "1d"});
@@ -20,7 +20,7 @@ router.get("/google",
         secure: true,
         maxAge: 86400000,
       });
-      res.redirect('http://localhost:5173')
+      res.redirect('https://vibetune-ten.vercel.app/')
     }
   );
   
