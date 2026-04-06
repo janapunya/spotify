@@ -14,7 +14,7 @@ app.use(session({
 }));
 
 app.use(cors({
-    origin: 'https://vibetune-ten.vercel.app/',
+    origin: 'https://vibetune-ten.vercel.app',
     methods: ["GET", "POST", "OPTIONS"],
     credentials: true
 }))
