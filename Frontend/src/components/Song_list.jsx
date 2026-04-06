@@ -38,12 +38,15 @@ const Song_list = () => {
 
     const allsong = async () => {
         try {
-            const res = await musicAPI.get('/music/allsongs');
-            setAll_songs(res.data.songs)
-
+            const res = await musicAPI.get('/music/allsongs', {
+                withCredentials: true
+            });
+    
+            setAll_songs(Array.isArray(res.data.songs) ? res.data.songs : []);
         }
         catch (err) {
-            console.log(err)
+            console.log(err);
+            setAll_songs([]);
         }
     }
 
