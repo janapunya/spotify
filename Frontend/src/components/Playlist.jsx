@@ -86,7 +86,7 @@ const Playlist = React.memo(({ isOpen, onClose, onSelectPlaylist }) => {
                             Create a new playlist
                         </div>
                     ) : (
-                        playListData.map((data, index) => (
+                        playListData.length > 0 && playListData.map((data, index) => (
                             <div
                             onClick={() => {
                                 onSelectPlaylist?.(data);

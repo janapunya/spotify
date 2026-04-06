@@ -123,7 +123,7 @@ const Song_list = () => {
                 </div>
                 <div className='space-y-4'>
                     {
-                        All_songs.map((song) => (
+                        All_songs.length > 0 && All_songs.map((song) => (
 
                             <div
                                 key={song._id}
