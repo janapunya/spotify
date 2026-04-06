@@ -97,7 +97,7 @@ const PlayListShow = ({ playlist, onBack }) => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
-          {playlistSongs.length > 0 && playlistSongs.map((song) => (
+          {playlistSongs && playlistSongs.map((song) => (
             <div
               key={song._id}
               className="group text-left w-full flex items-center justify-between gap-3 rounded-xl border border-zinc-700 bg-[#181818] hover:bg-[#202020] hover:border-green-500/40 px-3 py-2 transition-all duration-300"
