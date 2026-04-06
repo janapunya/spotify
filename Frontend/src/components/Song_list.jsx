@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, use } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { IoPlayBack } from "react-icons/io5";
 import { IoPlayForward } from "react-icons/io5"
 import { IoPlay } from "react-icons/io5";
@@ -12,13 +12,8 @@ const Song_list = () => {
     const audioRef = useRef({});
     const [showform, setshowform] = useState(false)
     const [isPlaying, setIsPlaying] = useState({});
-    const [currentTime, setCurrentTime] = useState(0);
-    const [duration, setDuration] = useState(0);
     const [All_songs, setAll_songs] = useState([]);
-    const [activeId, setActiveId] = useState(null);
     const [deletestutas, setdeletestutas] = useState({})
-    const [deleteUpdateStutas, setdeleteUpdateStutas] = useState(null)
-    const [lodingstutas, setlodingstutas] = useState(false)
     const Closeform = useCallback(() => {
         setshowform(false)
     }, [showform])
@@ -107,6 +102,7 @@ const Song_list = () => {
         }
     }
 
+    console.log(All_songs)
     return (
         <>
 
@@ -123,7 +119,7 @@ const Song_list = () => {
                 </div>
                 <div className='space-y-4'>
                     {
-                        All_songs&& All_songs.map((song) => (
+                        All_songs && All_songs.map((song) => (
 
                             <div
                                 key={song._id}
@@ -134,7 +130,7 @@ const Song_list = () => {
                                     <img
                                         src={song.imgUrl}
                                         alt=""
-                                        className="h-12 w-12 rounded-lg object-cover flex-shrink-0"
+                                        className="h-12 w-12 rounded-lg object-cover shrink-0"
                                     />
 
                                     <div className="min-w-0">
@@ -148,7 +144,7 @@ const Song_list = () => {
                                 </div>
 
                                 {/* CENTER CONTROLS */}
-                                <div className="flex items-center gap-3 flex-shrink-0">
+                                <div className="flex items-center gap-3 shrink-0">
                                     <audio
                                         ref={(e) => (audioRef.current[song._id] = e)}
                                         src={song?.audioUrl}
