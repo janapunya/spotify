@@ -26,4 +26,13 @@ app.use(passport.session());
 app.use('/auth',auth)
 app.use('/users',users)
 
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Auth Server is running",
+    uptime: process.uptime(), // seconds
+    timestamp: new Date(),
+  });
+});
+
 module.exports = app;

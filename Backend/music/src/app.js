@@ -14,4 +14,13 @@ app.use(cookieParser());
 app.use(express.json());
 app.use('/music',musicrouter);
 app.use('/playlist',playlistrouter);
+
+app.get("/health", (req, res) => {
+    res.status(200).json({
+      success: true,
+      message: "Music Server is running",
+      uptime: process.uptime(), // seconds
+      timestamp: new Date(),
+    });
+  });
 module.exports = app;
