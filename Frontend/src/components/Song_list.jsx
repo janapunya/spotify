@@ -41,7 +41,8 @@ const Song_list = () => {
             const res = await musicAPI.get('/music/allsongs', {
                 withCredentials: true
             });
-    
+            
+            console.log(res.data.songs)
             setAll_songs(Array.isArray(res.data.songs) ? res.data.songs : []);
         }
         catch (err) {
