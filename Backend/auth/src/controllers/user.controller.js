@@ -81,7 +81,7 @@ async function login_user(req, res) {
         }
 
         const pass = await bcrypt.compare(password, userdata.password);
- console.log(pass)
+ 
         if(pass){
             const token = jwt.sign({ email: userdata.email, id: userdata._id }, process.env.JWT_COOKIE_SECRET, { expiresIn: "1d" });
             res.cookie("auth_token", token, {
