@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, Activity } from 'react'
 import { gsap } from 'gsap'
-import axios from '../routs/Axios'
+import axios, { clearAuthToken } from '../routs/Axios'
 import { LuLogOut } from "react-icons/lu";
 import { FaEnvelope, FaUser, FaMusic, FaChevronDown, FaCog } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
@@ -86,10 +86,12 @@ const Useraccount = () => {
     try{
       const res = await axios.post('/users/log_out')
       if(res.data.stutas){
+        clearAuthToken();
         setUser(null)
         navigate('/')
       }
     }catch{
+      clearAuthToken();
       // If logout fails for any reason, still route back to home.
       navigate('/')
     }

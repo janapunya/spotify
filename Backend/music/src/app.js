@@ -7,7 +7,8 @@ const playlistrouter = require('./routs/playlist')
 app.use(cors({
     origin: 'https://vibetune-ten.vercel.app',
     methods: ["GET", "POST", "OPTIONS"],
-    credentials: true
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: false
 }))
 
 app.use(cookieParser());

@@ -14,13 +14,9 @@ router.get("/google",
     (req, res) => {
       const user = req.user;
       const token = jwt.sign({email:user.email,id:user._id},process.env.JWT_COOKIE_SECRET,{expiresIn: "1d"});
-      res.cookie("auth_token", token, {
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-        maxAge: 86400000,
-      });
-      res.redirect('https://vibetune-ten.vercel.app/')
+      // Frontend stores token in localStorage (cookie-less auth)
+      const redirectUrl = `https://vibetune-ten.vercel.app/?token=${encodeURIComponent(token)}`;
+      res.redirect(redirectUrl)
     }
   );
   

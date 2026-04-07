@@ -12,7 +12,8 @@ app.set('trust proxy', 1);
 app.use(cors({
   origin: 'https://vibetune-ten.vercel.app',
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: false,
 }));
 
 app.use(cookieParser());        // ✅ before session

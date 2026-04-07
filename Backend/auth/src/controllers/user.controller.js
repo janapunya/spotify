@@ -4,15 +4,23 @@ const bcrypt = require('bcryptjs')
 const { v4: uuidv4 } = require('uuid');
 const imageUpload = require('../services/imagekit.io')
 
+function getBearerToken(req) {
+    const header = req.headers?.authorization || req.headers?.Authorization;
+    if (!header || typeof header !== 'string') return null;
+    const [type, token] = header.split(' ');
+    if (type !== 'Bearer') return null;
+    return token || null;
+}
+
 async function checkuser(req, res) {
-    let cookie = req.cookies.auth_token;
+    const token = getBearerToken(req);
     try {
-        if (!cookie) {
+        if (!token) {
             return res.json(
                 { stutas: false }
             )
         }
-        const check = jwt.verify(cookie, process.env.JWT_COOKIE_SECRET);
+        const check = jwt.verify(token, process.env.JWT_COOKIE_SECRET);
         if (!check) {
             return res.json({
                 stutas: false
@@ -53,16 +61,10 @@ async function create_user(req, res) {
         })
 
         const token = jwt.sign({ email: newuser.email, id: newuser._id }, process.env.JWT_COOKIE_SECRET, { expiresIn: "1d" });
-        res.cookie("auth_token", token, {
-            httpOnly: true,
-            sameSite: "none",
-            secure: true,
-            maxAge: 86400000,
-        });
-
         return res.json({
             IsCreated: true,
-            message: "user create succesfully"
+            message: "user create succesfully",
+            token
         })
 
     } catch (err) {
@@ -84,15 +86,10 @@ async function login_user(req, res) {
  
         if(pass){
             const token = jwt.sign({ email: userdata.email, id: userdata._id }, process.env.JWT_COOKIE_SECRET, { expiresIn: "1d" });
-            res.cookie("auth_token", token, {
-                httpOnly: true,
-                sameSite: "none",
-                secure: true,
-                maxAge: 86400000,
-            });
             return res.json({
                 stutas:true,
-                pass:true
+                pass:true,
+                token
             })
         }
         else{
@@ -107,15 +104,15 @@ async function login_user(req, res) {
 }
 
 async function update_user(req, res) {
-    let cookie = req.cookies.auth_token;
+    const token = getBearerToken(req);
     try {
-        if (!cookie) {
+        if (!token) {
             return res.json({
                 stutas: false,
                 message: "Not authenticated"
             })
         }
-        const check = jwt.verify(cookie, process.env.JWT_COOKIE_SECRET);
+        const check = jwt.verify(token, process.env.JWT_COOKIE_SECRET);
         if (!check) {
             return res.json({
                 stutas: false,
@@ -163,15 +160,15 @@ async function update_user(req, res) {
 }
 
 async function create_artist(req, res) {
-    let cookie = req.cookies.auth_token;
+    const token = getBearerToken(req);
     try {
-        if (!cookie) {
+        if (!token) {
             return res.json({
                 stutas: false,
                 message: "Not authenticated"
             })
         }
-        const check = jwt.verify(cookie, process.env.JWT_COOKIE_SECRET);
+        const check = jwt.verify(token, process.env.JWT_COOKIE_SECRET);
         if (!check) {
             return res.json({
                 stutas: false,
@@ -200,12 +197,6 @@ async function create_artist(req, res) {
 }
 async function Logout(req,res) {
     try {
-        res.clearCookie("auth_token", {
-            httpOnly: true,
-            sameSite: "none",
-            secure: true,
-        });
-
         return res.json({
             stutas: true
         });

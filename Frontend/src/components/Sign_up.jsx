@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { FaGoogle, FaEye, FaEyeSlash, FaUser, FaImage } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
-import api from '../routs/Axios'
+import api, { setAuthToken, URL } from '../routs/Axios'
 const Sign_up = () => {
   const navigate = useNavigate()
   const containerRef = useRef(null)
@@ -135,7 +135,7 @@ const Sign_up = () => {
       repeat: 1,
       ease: 'power2.inOut',
     })
-    window.location.href = 'http://localhost:3000/auth/google'
+    window.location.href = `${URL}/auth/google`
   }
 
   const handleImageChange = (e) => {
@@ -215,9 +215,12 @@ const Sign_up = () => {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       console.log(res.data)
-      const { IsCreated, message } = res.data || {}
+      const { IsCreated, message, token } = res.data || {}
       setisCreated(IsCreated)
       setFeedback({ visible: true, isCreated: IsCreated, message: message || '' })
+      if (IsCreated && token) {
+        setAuthToken(token);
+      }
 
     } catch (err) {
       console.log('Signup error:', err)

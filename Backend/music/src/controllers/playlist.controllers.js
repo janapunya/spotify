@@ -2,15 +2,23 @@ const playlist = require('../models/playlist.model');
 const imagekit = require('../services/imagekit');
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
+
+function getBearerToken(req) {
+    const header = req.headers?.authorization || req.headers?.Authorization;
+    if (!header || typeof header !== 'string') return null;
+    const [type, token] = header.split(' ');
+    if (type !== 'Bearer') return null;
+    return token || null;
+}
 async function Add_playlist(req, res) {
     try {
-        let cookie = req.cookies.auth_token;
-        if (!cookie) {
+        const token = getBearerToken(req);
+        if (!token) {
             return res.json(
                 { stutas: false }
             )
         }
-        const check = jwt.verify(cookie, process.env.JWT_COOKIE_SECRET);
+        const check = jwt.verify(token, process.env.JWT_COOKIE_SECRET);
         if (!check) {
             return res.json({
                 stutas: false
@@ -39,14 +47,14 @@ async function Add_playlist(req, res) {
 }
 
 async function Playlistdata(req, res) {
-    let cookie = req.cookies.auth_token;
+    const token = getBearerToken(req);
     try {
-        if (!cookie) {
+        if (!token) {
             return res.json(
                 { stutas: false }
             )
         }
-        const check = jwt.verify(cookie, process.env.JWT_COOKIE_SECRET);
+        const check = jwt.verify(token, process.env.JWT_COOKIE_SECRET);
         if (!check) {
             return res.json({
                 stutas: false
