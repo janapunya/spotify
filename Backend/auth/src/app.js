@@ -8,6 +8,7 @@ const session = require("express-session");
 const users = require('./routs/users');
 const auth = require('./routs/auth');
 
+app.set('trust proxy', 1);
 app.use(cors({
   origin: 'https://vibetune-ten.vercel.app',
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
